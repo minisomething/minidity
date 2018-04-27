@@ -1,7 +1,8 @@
 minidity
 ====
 
-A tiny script compiler & vm.
+A tiny script compiler & vm.<br>
+See also: [minichain](https://github.com/pjc0247/minichain)
 
 Overview
 ----
