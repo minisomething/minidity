@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace minivm
 {
+    [Serializable]
     public class Method
     {
         public string signature;
         public int entry;
     }
 
+    [Serializable]
     public class ABI
     {
         public string[] contracts;

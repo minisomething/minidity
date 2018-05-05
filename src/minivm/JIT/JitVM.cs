@@ -142,9 +142,10 @@ namespace minivm
             return func;
         }
 
-        public object Execute(ABI abi, byte[] instruction, int gasLimit, out int gasUsed)
+        public object Execute(byte[] instruction, int gasLimit, out int gasUsed)
         {
-            return Execute(abi, BConv.FromBytes(instruction), gasLimit, out gasUsed);
+            (var abi, var insts) = BConv.FromBytes(instruction);
+            return Execute(abi, insts, gasLimit, out gasUsed);
         }
         public object Execute(ABI abi, Instruction[] instructions, int gasLimit, out int gasUsed)
         {

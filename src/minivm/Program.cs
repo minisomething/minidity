@@ -26,7 +26,7 @@ namespace minivm
             };
 
             var vm = new VM<MemStateProvider>();
-            Console.WriteLine(vm.Execute(null, inst, 1000, out _));
+            Console.WriteLine(vm.Execute(null, inst, "", 1000, out _));
 
             try
             {

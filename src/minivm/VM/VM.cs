@@ -15,9 +15,11 @@ namespace minivm
         private ExeContext ctx;
 
         private bool halt = false;
+        private bool verbose = false;
 
-        public VM()
+        public VM(bool _verbose = false)
         {
+            verbose = _verbose;
             stateProvider = new T();
 
             InitInternalCall();
@@ -28,21 +30,47 @@ namespace minivm
             InitVariable();
         }
 
-        public object Execute(ABI abi, byte[] instruction, int gasLimit, out int gasUsed)
+        public object Execute(byte[] raw, string methodSignature, object[] args, int gasLimit, out int gasUsed)
         {
-            return Execute(abi, BConv.FromBytes(instruction), gasLimit, out gasUsed);
+            (var abi, var insts) = BConv.FromBytes(raw);
+            return Execute(abi, insts, methodSignature, args, gasLimit, out gasUsed);
         }
-        public object Execute(ABI abi, Instruction[] instructions, int gasLimit, out int gasUsed)
+        public object Execute(
+            ABI abi, Instruction[] instructions,
+            string methodSignature,
+            int gasLimit, out int gasUsed)
+        {
+            return Execute(abi, instructions,
+                methodSignature, new object[] { },
+                gasLimit, out gasUsed);
+        }
+        public object Execute(
+            ABI abi, Instruction[] instructions,
+            string methodSignature, object[] args,
+            int gasLimit, out int gasUsed)
         {
             BuildCalltableFromAbi(abi);
 
-            ctx = new ExeContext(instructions);
             gasUsed = 0;
             halt = false;
+            ctx = new ExeContext(instructions);
+            var targetMethod = abi.methods
+                .FirstOrDefault(x => x.signature == methodSignature);
+            if (targetMethod == null)
+                throw new ArgumentException("targetMethod is null");
 
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("   --------EXECUTE----------");
+            ctx.instructionCursor = targetMethod.entry;
+
+            // LdArgs
+            foreach (var arg in args)
+                ctx.state.Push(arg);
+            ctx.callStack.PushCall(methodSignature);
+
+            if (verbose) {
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("   --------EXECUTE----------");
+            }
             while (halt == false)
             {
                 if (gasLimit <= 0)
@@ -51,7 +79,8 @@ namespace minivm
                 var inst = instructions[ctx.instructionCursor++];
                 ctx.current = inst;
 
-                Console.WriteLine($" - {inst.code, -6} | {inst.operand, 17}");
+                if (verbose)
+                    Console.WriteLine($" - {inst.code, -6} | {inst.operand, 17}");
 
                 if (inst.code == Opcode.Nop) ;
                 else

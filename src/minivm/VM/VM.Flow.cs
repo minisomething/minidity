@@ -30,7 +30,7 @@ namespace minivm
             });
             Handle(Opcode.Ret, () =>
             {
-                if (ctx.callStack.count == 0) halt = true;
+                if (ctx.callStack.count == 1) halt = true;
                 else
                 {
                     var cd = ctx.callStack.Pop();

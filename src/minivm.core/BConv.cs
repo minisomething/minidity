@@ -14,29 +14,32 @@ namespace minivm
     {
         private static string MagicString = "0xm";
 
-        public static byte[] ToBytes(Instruction[] instructions)
+        public static byte[] ToBytes(ABI abi, Instruction[] instructions)
         {
             var formatter = new BinaryFormatter();
             using (var stream = new MemoryStream())
             {
+                formatter.Serialize(stream, abi);
                 formatter.Serialize(stream, instructions);
                 return stream.ToArray();
             }
         }
-        public static Instruction[] FromBytes(byte[] bytes)
+        public static (ABI abi, Instruction[] insts) FromBytes(byte[] bytes)
         {
             var formatter = new BinaryFormatter();
             using (var stream = new MemoryStream(bytes))
             {
-                return (Instruction[])formatter.Deserialize(stream);
+                return (
+                    abi: (ABI)formatter.Deserialize(stream),
+                    insts: (Instruction[])formatter.Deserialize(stream));
             }
         }
 
-        public static string ToBase64(Instruction[] instructions)
+        public static string ToBase64(ABI abi, Instruction[] instructions)
         {
-            return MagicString + Convert.ToBase64String(Zip(ToBytes(instructions)));
+            return MagicString + Convert.ToBase64String(Zip(ToBytes(abi, instructions)));
         }
-        public static Instruction[] FromBase64(string base64)
+        public static (ABI abi, Instruction[] insts) FromBase64(string base64)
         {
             if (base64.StartsWith(MagicString) == false)
                 throw new ArgumentException("input string is not a valid program");
