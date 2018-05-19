@@ -9,6 +9,7 @@ namespace minivm
     public class MemStateProvider : IStateProvider
     {
         public int blockNo => 1;
+        public TransactionData tx => new TransactionData();
 
         private Dictionary<string, object> data = new Dictionary<string, object>();
 

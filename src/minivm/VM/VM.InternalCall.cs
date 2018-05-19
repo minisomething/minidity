@@ -14,6 +14,9 @@ namespace minivm
             callTable["Console.print"] = -1;
             callTable["Chain.getBlockNo"] = -1;
             callTable["Chain.transfer"] = -1;
+
+            callTable["tx.sender"] = -1;
+            callTable["tx.value"] = -1;
         }
 
         private void PerformInternalCall(string signature)
@@ -39,8 +42,15 @@ namespace minivm
             else if (signature == "Console.print")
             {
                 var a = ctx.state.Pop();
-
                 Console.WriteLine("PRINT: " + a);
+            }
+            else if (signature == "tx.sender")
+            {
+                ctx.state.Push(stateProvider.tx.senderAddress);
+            }
+            else if (signature == "tx.value")
+            {
+                ctx.state.Push(stateProvider.tx.value);
             }
         }
     }
