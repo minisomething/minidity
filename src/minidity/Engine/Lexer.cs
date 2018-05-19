@@ -29,6 +29,8 @@ namespace minidity
             AddToken("*", TokenType.Operator, 4);
             AddToken("/", TokenType.Operator, 4);
 
+            //AddToken("\"", TokenType.Quotes);
+
             AddToken(",", TokenType.Comma, -1000);
             AddToken(";", TokenType.Semicolon, -9999);
             AddToken("if", TokenType.Keyword);
@@ -53,6 +55,9 @@ namespace minidity
 
         private static TokenType GetTokenType(string token)
         {
+            if (token.First() == '\"' && token.Last() == '\"')
+                return TokenType.Literal;
+
             if (double.TryParse(token, out _))
                 return TokenType.Literal;
             if (int.TryParse(token, out _))
@@ -132,6 +137,15 @@ namespace minidity
         }
         private Token ParseSingle(string str)
         {
+            if (str.First() == '\"' && str.Last() == '\"')
+            {
+                return new Token()
+                {
+                    raw = str.Substring(1, str.Length - 2),
+                    type = TokenType.Literal
+                };
+            }
+
             var ident = new Regex("[a-zA-Z_]+[a-zA-Z0-9_]*");
             if (ident.IsMatch(str))
             {

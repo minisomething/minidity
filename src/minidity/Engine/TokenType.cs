@@ -10,6 +10,7 @@ namespace minidity
     {
         None,
         Ident,
+        Quotes,
         Literal,
         Keyword,
         Operator,

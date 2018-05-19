@@ -17,7 +17,8 @@ namespace minidity
                 private pg;
 
                 def _ctor() {
-                    global = 1;
+                    
+                    global = ""QWER"";
                 }
 
                 def sum (a, b) {
