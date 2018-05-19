@@ -48,7 +48,6 @@
     <Compile Include="Instruction.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="udouble.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
