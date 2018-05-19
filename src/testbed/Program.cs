@@ -21,6 +21,7 @@ def _ctor(){
 global_a = 1234;
 Console.print(bb(2,3));
 Console.print(Chain.getBlockNo());
+ret ""jhello"";
 }
 
 def bb(a,b) {

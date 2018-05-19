@@ -48,6 +48,8 @@ namespace minidity
         public FieldDeclationNode(SyntaxNode parent)
             : base(parent)
         {
+            // TODO
+            capacity = 1;
         }
 
         public override void Emit(BuildContext ctx, Emitter emitter)

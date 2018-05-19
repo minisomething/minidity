@@ -14,9 +14,10 @@ namespace minidity
             ClassNode currentClass = null;
             SyntaxNode current = root;
 
+            SToken prevToken = null;
             foreach (var token in tokens)
             {
-                Console.WriteLine(token.raw + " " + token.type.ToString());
+                Console.WriteLine($"{current.GetType()} : " + token.raw + " " + token.type.ToString());
 
                 if (token.type == STokenType.Operator)
                 {
@@ -37,7 +38,7 @@ namespace minidity
                 }
                 else if (token.type == STokenType.Endl)
                 {
-                    current = current.parent;
+                    //current = current.parent; 
                 }
                 else if (token.type == STokenType.Call)
                 {
@@ -126,6 +127,8 @@ namespace minidity
                 {
                     current = current.nearestIncompletedParent;
                 }
+
+                prevToken = token;
             }
 
             return root;
