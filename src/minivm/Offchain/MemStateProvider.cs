@@ -22,5 +22,9 @@ namespace minivm
         {
             data[key] = value;
         }
+
+        public void Transfer(string receiverAddress, double amount)
+        {
+        }
     }
 }

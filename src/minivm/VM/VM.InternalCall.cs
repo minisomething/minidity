@@ -13,6 +13,7 @@ namespace minivm
             callTable["Math.pow"] = -1;
             callTable["Console.print"] = -1;
             callTable["Chain.getBlockNo"] = -1;
+            callTable["Chain.transfer"] = -1;
         }
 
         private void PerformInternalCall(string signature)
@@ -24,11 +25,18 @@ namespace minivm
 
                 ctx.state.Push(MMath.Pow(b, a));
             }
-            if (signature == "Chain.getBlockNo")
+            else if (signature == "Chain.getBlockNo")
             {
                 ctx.state.Push(stateProvider.blockNo);
             }
-            if (signature == "Console.print")
+            else if (signature == "Chain.transfer")
+            {
+                var a = (string)ctx.state.Pop();
+                var b = (udouble)ctx.state.Pop();
+
+                stateProvider.Transfer(a, b);
+            }
+            else if (signature == "Console.print")
             {
                 var a = ctx.state.Pop();
 

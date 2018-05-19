@@ -12,5 +12,7 @@ namespace minivm
 
         object GetState(string key);
         void SetState(string key, object value);
+
+        void Transfer(string receiverAddress, double value);
     }
 }
