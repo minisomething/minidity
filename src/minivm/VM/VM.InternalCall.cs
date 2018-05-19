@@ -31,10 +31,10 @@ namespace minivm
             }
             else if (signature == "Chain.transfer")
             {
-                var a = (string)ctx.state.Pop();
-                var b = (udouble)ctx.state.Pop();
+                var amount = (udouble)ctx.state.PopDouble();
+                var receiverAddress = (string)ctx.state.Pop();
 
-                stateProvider.Transfer(a, b);
+                stateProvider.Transfer(receiverAddress, amount);
             }
             else if (signature == "Console.print")
             {

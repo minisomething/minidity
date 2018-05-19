@@ -19,13 +19,14 @@ public global_a;
 
 def _ctor(){
 global_a = 1234;
-Console.print(bb(2,3));
-Console.print(Chain.getBlockNo());
+
+Chain.transfer(""1111"", 1);
+
 ret ""jhello"";
 }
 
 def bb(a,b) {
-    ret Math.pow(a, b);
+    Chain.transfer(""1111"", 1);
 }
 
 }";

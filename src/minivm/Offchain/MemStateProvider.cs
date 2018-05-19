@@ -25,6 +25,7 @@ namespace minivm
 
         public void Transfer(string receiverAddress, double amount)
         {
+            Console.WriteLine($"SEND {receiverAddress} / {amount}");
         }
     }
 }
