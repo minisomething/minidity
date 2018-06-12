@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ABI.cs" />
     <Compile Include="BConv.cs" />
+    <Compile Include="Exception\VMRuntimeException.cs" />
     <Compile Include="Instruction.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
