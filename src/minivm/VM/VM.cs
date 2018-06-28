@@ -57,7 +57,7 @@ namespace minivm
             var targetMethod = abi.methods
                 .FirstOrDefault(x => x.signature == methodSignature);
             if (targetMethod == null)
-                throw new ArgumentException("targetMethod is null");
+                throw new ArgumentException("Method not exists in the given abi.");
 
             ctx.instructionCursor = targetMethod.entry;
 
@@ -82,13 +82,13 @@ namespace minivm
                 if (verbose)
                     Console.WriteLine($" - {inst.code, -6} | {inst.operand, 17}");
 
-                if (inst.code == Opcode.Nop) ;
-                else
-                    processor[inst.code].Invoke();
-
                 var gp = GasTable.GetGasPrice(inst.code);
                 gasLimit -= gp;
                 gasUsed += gp;
+
+                if (inst.code == Opcode.Nop) ;
+                else
+                    processor[inst.code].Invoke();
             }
 
             if (ctx.state.count == 0)
