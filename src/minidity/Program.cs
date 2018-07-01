@@ -30,7 +30,7 @@ namespace minidity
                 }
             }";
 
-            var program = MinidityCompiler.Compile(src);
+            var program = MinidityCompiler.BuildProgram(src);
 
             foreach (var i in program.instructions)
                 Console.WriteLine(i.code + " / " + i.operand);

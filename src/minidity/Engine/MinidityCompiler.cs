@@ -15,14 +15,22 @@ namespace minidity
     }
     public class MinidityCompiler
     {
-        public static MinidityProgram Compile(string src)
+        public static RootNode Compile(string src)
         {
             var root =
                 TreeBuilder.Build(
                     Sexper.SexpPrefix(
                         Lexer.Parse(src)));
 
-            root.Print();
+            return root;
+        }
+
+        /// <summary>
+        /// Builds program and ABI from given SyntaxRoot.
+        /// </summary>
+        /// <param name="root">Syntax Root</param>
+        public static MinidityProgram BuildProgram(RootNode root)
+        {
             var emitter = new Emitter();
             var ctx = new BuildContext();
             root.Emit(ctx, emitter);
@@ -32,6 +40,17 @@ namespace minidity
                 abi = emitter.GetABI(),
                 instructions = emitter.GetInstructions()
             };
+        }
+        /// <summary>
+        /// Builds program and ABI from given code.
+        /// </summary>
+        /// <param name="src">Minidity code</param>
+        public static MinidityProgram BuildProgram(string src)
+        {
+            var root = Compile(src);
+
+            root.Print();
+            return BuildProgram(root);
         }
     }
 }

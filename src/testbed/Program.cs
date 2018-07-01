@@ -38,7 +38,7 @@ def bb(a,b) {
 
 }";
 
-            var program = MinidityCompiler.Compile(src);
+            var program = MinidityCompiler.BuildProgram(src);
             var vm = new VM<MemStateProvider>(true);
 
             Console.WriteLine(BConv.ToBase64(program.abi, program.instructions));

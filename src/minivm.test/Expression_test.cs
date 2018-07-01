@@ -16,7 +16,7 @@ namespace minivm.test
         {
             var src = CreateExecutable(exp);
 
-            var p = MinidityCompiler.Compile(src);
+            var p = MinidityCompiler.BuildProgram(src);
             var vm = new VM<MemStateProvider>();
 
             return vm.Execute(null, p.instructions, int.MaxValue, out _);

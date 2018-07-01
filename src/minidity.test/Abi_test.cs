@@ -23,7 +23,7 @@ class Zoo {
     def a() { }
 }
 ";
-            var p = MinidityCompiler.Compile(src);
+            var p = MinidityCompiler.BuildProgram(src);
 
             Assert.AreEqual(true, p.abi.contracts.Any(x => x == "Foo"));
             Assert.AreEqual(true, p.abi.contracts.Any(x => x == "Bar"));
@@ -40,7 +40,7 @@ class Foo {
     def c() { }
 }
 ";
-            var p = MinidityCompiler.Compile(src);
+            var p = MinidityCompiler.BuildProgram(src);
 
             Assert.AreEqual(true, p.abi.methods.Any(x => x.signature == ABISignature.Method("Foo", "a")));
             Assert.AreEqual(true, p.abi.methods.Any(x => x.signature == ABISignature.Method("Foo", "b")));
