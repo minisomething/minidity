@@ -98,17 +98,14 @@ namespace minidity
                 }
             }
 
-             Console.WriteLine("BEGIN TT");
-             foreach (var token in tokens)
-             Console.Write(token.raw + " ");
-             Console.WriteLine("END TT");
+            Console.WriteLine("BEGIN TT");
+            foreach (var token in tokens)
+                Console.Write(token.raw + " ");
+            Console.WriteLine("END TT");
 
-            var sexp = Sexp(tokens);
-            sexp.Reverse();
-
-            return sexp.ToArray();
+            return Sexp(tokens).Reverse().ToArray();
         }
-        private static List<SToken> Sexp(List<Token> tokens)
+        private static SToken[] Sexp(List<Token> tokens)
         {
             return new Sexper()._Sexp(tokens);
         }
@@ -118,8 +115,8 @@ namespace minidity
             stokens = new List<SToken>();
             stack = new Stack<Token>();
         }
-        private List<SToken> _Sexp(List<Token> tokens)
-        { 
+        private SToken[] _Sexp(List<Token> tokens)
+        {
             var innerMethod = 2;
             var depth = 0;
 
@@ -177,18 +174,7 @@ namespace minidity
                     token.type == TokenType.Semicolon ||
                     token.type == TokenType.Comma)
                 {
-                    while (stack.Count > 0)
-                    {
-                        if (stack.Peek().priority <= token.priority)
-                            break;
-
-                        var t = stack.Pop();
-                        stokens.Add(new SToken()
-                        {
-                            type = STokenType.Operator,
-                            raw = t.raw
-                        });
-                    }
+                    FlushStackUntil(token.priority);
 
                     stokens.Add(new SToken()
                     {
@@ -221,22 +207,7 @@ namespace minidity
                 else if (token.type == TokenType.LeftBracket)
                 {
                     depth++;
-
-                    while (stack.Count > 0)
-                    {
-                        if ((stack.Peek().type == TokenType.LeftBracket))
-                        {
-                            stack.Pop();
-                            break;
-                        }
-
-                        var t = stack.Pop();
-                        stokens.Add(new SToken()
-                        {
-                            type = t.stype,
-                            raw = t.raw
-                        });
-                    }
+                    FlushStackUntil(TokenType.LeftBracket);
 
                     stokens.Add(new SToken()
                     {
@@ -248,30 +219,8 @@ namespace minidity
                 else if (token.type == TokenType.RightBracket)
                 {
                     depth--;
+                    FlushStackUntil(TokenType.LeftBracket);
 
-                    while (stack.Count > 0)
-                    {
-                        if ((stack.Peek().type == TokenType.LeftBracket))
-                        {
-                            //Console.WriteLine("END FLUSH");
-                            stack.Pop();
-                            break;
-                        }
-
-                        //Console.WriteLine("BEGIN FLUSH");
-
-                        //Console.WriteLine("End Flush");
-
-                        var t = stack.Pop();
-
-                        //Console.WriteLine(t.type.ToString());
-
-                        stokens.Add(new SToken()
-                        {
-                            type = t.stype,
-                            raw = t.raw
-                        });
-                    }
                     stokens.Add(new SToken()
                     {
                         type = STokenType.BeginBlock,
@@ -338,7 +287,7 @@ namespace minidity
                             break;
                         }
 
-                        
+
                         foreach (var c in stack)
                             Console.WriteLine(c.raw);
                         var t = stack.Pop();
@@ -355,20 +304,7 @@ namespace minidity
                 }
                 else if (token.type == TokenType.Keyword)
                 {
-                    while (true)
-                    {
-                        if (stack.Count == 0)
-                            break;
-                        if (stack.Peek().priority <= token.priority)
-                            break;
-
-                        var t = stack.Pop();
-                        stokens.Add(new SToken()
-                        {
-                            type = t.stype,
-                            raw = t.raw
-                        });
-                    }
+                    FlushStackUntil(token.priority);
 
                     switch (token.raw)
                     {
@@ -401,7 +337,7 @@ namespace minidity
                                 });
                             }
 
-                            
+
                             break;
                         case "else":
                             stokens.Add(new SToken()
@@ -437,7 +373,41 @@ namespace minidity
             Console.WriteLine("---------END SEXP--------");
             //Console.WriteLine();
 
-            return stokens;
+            return stokens.ToArray();
+        }
+
+        private void FlushStackUntil(TokenType type)
+        {
+            while (stack.Count > 0)
+            {
+                if ((stack.Peek().type == type))
+                {
+                    stack.Pop();
+                    break;
+                }
+
+                var t = stack.Pop();
+                stokens.Add(new SToken()
+                {
+                    type = t.stype,
+                    raw = t.raw
+                });
+            }
+        }
+        private void FlushStackUntil(int priority)
+        {
+            while (stack.Count > 0)
+            {
+                if (stack.Peek().priority <= priority)
+                    break;
+
+                var t = stack.Pop();
+                stokens.Add(new SToken()
+                {
+                    type = t.stype,
+                    raw = t.raw
+                });
+            }
         }
     }
 }
