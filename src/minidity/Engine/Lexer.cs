@@ -121,6 +121,7 @@ namespace minidity
                         Flush();
                         current.raw = candidate;
                         current.type = pair.Value.Item1;
+                        current.priority = pair.Value.Item2;
                         AppendToken(current);
                         current = new Token();
 

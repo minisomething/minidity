@@ -19,8 +19,12 @@ public global_a;
 
 def _ctor(){
 
+f = 1;
+
+n = 2;
+
 global_a = 123;
-if (1 > 2) {
+if (f < n) {
     global_a = 4444;
 }
 

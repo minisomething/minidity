@@ -9,6 +9,9 @@ namespace minidity
     // S-Expression
     public class Sexper
     {
+        private List<SToken> stokens;
+        private Stack<Token> stack;
+
         public static SToken[] SexpPrefix(Token[] _tokens)
         {
             var tokens = new List<Token>(_tokens);
@@ -107,9 +110,16 @@ namespace minidity
         }
         private static List<SToken> Sexp(List<Token> tokens)
         {
-            var sexps = new List<SToken>();
-            var stack = new Stack<Token>();
+            return new Sexper()._Sexp(tokens);
+        }
 
+        public Sexper()
+        {
+            stokens = new List<SToken>();
+            stack = new Stack<Token>();
+        }
+        private List<SToken> _Sexp(List<Token> tokens)
+        { 
             var innerMethod = 2;
             var depth = 0;
 
@@ -123,17 +133,9 @@ namespace minidity
 
                 if (token.type == TokenType.Literal)
                 {
-                    sexps.Add(new SToken()
+                    stokens.Add(new SToken()
                     {
                         type = STokenType.Literal,
-                        raw = token.raw
-                    });
-                }
-                else if (token.type == TokenType.Semicolon)
-                {
-                    sexps.Add(new SToken()
-                    {
-                        type = STokenType.Endl,
                         raw = token.raw
                     });
                 }
@@ -145,7 +147,7 @@ namespace minidity
                         {
                             stack.Push(token);
 
-                            sexps.Add(new SToken()
+                            stokens.Add(new SToken()
                             {
                                 type = STokenType.EndCall,
                                 raw = "ENDCALL"
@@ -155,7 +157,7 @@ namespace minidity
                         {
                             stack.Push(token);
 
-                            sexps.Add(new SToken()
+                            stokens.Add(new SToken()
                             {
                                 type = STokenType.EndParam,
                                 raw = "ENDPARAM"
@@ -164,7 +166,7 @@ namespace minidity
                     }
                     else
                     {
-                        sexps.Add(new SToken()
+                        stokens.Add(new SToken()
                         {
                             type = STokenType.Ident,
                             raw = token.raw
@@ -175,18 +177,27 @@ namespace minidity
                     token.type == TokenType.Semicolon ||
                     token.type == TokenType.Comma)
                 {
+                    Console.WriteLine("SEMICOLON " + token.priority);
                     while (stack.Count > 0)
                     {
+                        Console.WriteLine($"COM  {stack.Peek().raw} / {stack.Peek().priority}");
                         if (stack.Peek().priority <= token.priority)
                             break;
 
                         var t = stack.Pop();
-                        sexps.Add(new SToken()
+                        Console.WriteLine("ADD " + t.raw);
+                        stokens.Add(new SToken()
                         {
                             type = STokenType.Operator,
                             raw = t.raw
                         });
                     }
+
+                    stokens.Add(new SToken()
+                    {
+                        type = STokenType.Endl,
+                        raw = token.raw
+                    });
                 }
                 else if (token.type == TokenType.Operator)
                 {
@@ -199,7 +210,7 @@ namespace minidity
                             break;
 
                         var t = stack.Pop();
-                        sexps.Add(new SToken()
+                        stokens.Add(new SToken()
                         {
                             type = STokenType.Operator,
                             raw = t.raw
@@ -222,14 +233,14 @@ namespace minidity
                         }
 
                         var t = stack.Pop();
-                        sexps.Add(new SToken()
+                        stokens.Add(new SToken()
                         {
                             type = t.stype,
                             raw = t.raw
                         });
                     }
 
-                    sexps.Add(new SToken()
+                    stokens.Add(new SToken()
                     {
                         type = STokenType.EndBlock,
                         raw = "}"
@@ -257,13 +268,13 @@ namespace minidity
 
                         //Console.WriteLine(t.type.ToString());
 
-                        sexps.Add(new SToken()
+                        stokens.Add(new SToken()
                         {
                             type = t.stype,
                             raw = t.raw
                         });
                     }
-                    sexps.Add(new SToken()
+                    stokens.Add(new SToken()
                     {
                         type = STokenType.BeginBlock,
                         raw = "{"
@@ -286,7 +297,7 @@ namespace minidity
                             {
                                 if (tt.raw == "if")
                                 {
-                                    sexps.Add(new SToken()
+                                    stokens.Add(new SToken()
                                     {
                                         type = STokenType.If,
                                         raw = tt.raw
@@ -294,7 +305,7 @@ namespace minidity
                                 }
                                 else if (tt.type == TokenType.Ident)
                                 {
-                                    sexps.Add(new SToken()
+                                    stokens.Add(new SToken()
                                     {
                                         type = STokenType.Call,
                                         raw = tt.raw
@@ -303,12 +314,12 @@ namespace minidity
                             }
                             else
                             {
-                                sexps.Add(new SToken()
+                                stokens.Add(new SToken()
                                 {
                                     type = STokenType.Param,
                                     raw = "BEGIN_PARAM"
                                 });
-                                sexps.Add(new SToken()
+                                stokens.Add(new SToken()
                                 {
                                     type = STokenType.Ident,
                                     raw = tt.raw
@@ -319,7 +330,7 @@ namespace minidity
                         }
 
                         var t = stack.Pop();
-                        sexps.Add(new SToken()
+                        stokens.Add(new SToken()
                         {
                             type = t.stype,
                             raw = t.raw
@@ -339,7 +350,7 @@ namespace minidity
                             break;
 
                         var t = stack.Pop();
-                        sexps.Add(new SToken()
+                        stokens.Add(new SToken()
                         {
                             type = t.stype,
                             raw = t.raw
@@ -349,14 +360,14 @@ namespace minidity
                     switch (token.raw)
                     {
                         case "ret":
-                            sexps.Add(new SToken()
+                            stokens.Add(new SToken()
                             {
                                 type = STokenType.Ret,
                                 raw = token.raw
                             });
                             break;
                         case "class":
-                            sexps.Add(new SToken()
+                            stokens.Add(new SToken()
                             {
                                 type = STokenType.Class,
                                 raw = token.raw
@@ -370,7 +381,7 @@ namespace minidity
                             }
                             else
                             {
-                                sexps.Add(new SToken()
+                                stokens.Add(new SToken()
                                 {
                                     type = STokenType.If,
                                     raw = token.raw
@@ -380,28 +391,28 @@ namespace minidity
                             
                             break;
                         case "else":
-                            sexps.Add(new SToken()
+                            stokens.Add(new SToken()
                             {
                                 type = STokenType.Else,
                                 raw = token.raw
                             });
                             break;
                         case "def":
-                            sexps.Add(new SToken()
+                            stokens.Add(new SToken()
                             {
                                 type = STokenType.Method,
                                 raw = token.raw
                             });
                             break;
                         case "public":
-                            sexps.Add(new SToken()
+                            stokens.Add(new SToken()
                             {
                                 type = STokenType.Public,
                                 raw = token.raw
                             });
                             break;
                         case "private":
-                            sexps.Add(new SToken()
+                            stokens.Add(new SToken()
                             {
                                 type = STokenType.Private,
                                 raw = token.raw
@@ -413,7 +424,7 @@ namespace minidity
             Console.WriteLine("---------END SEXP--------");
             //Console.WriteLine();
 
-            return sexps;
+            return stokens;
         }
     }
 }
