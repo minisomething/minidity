@@ -29,6 +29,9 @@ namespace minidity
             AddToken("*", TokenType.Operator, 4);
             AddToken("/", TokenType.Operator, 4);
 
+            AddToken(">", TokenType.Operator, 1);
+            AddToken("<", TokenType.Operator, 1);
+
             //AddToken("\"", TokenType.Quotes);
 
             AddToken(",", TokenType.Comma, -1000);

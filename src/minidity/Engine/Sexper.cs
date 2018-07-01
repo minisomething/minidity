@@ -206,11 +206,29 @@ namespace minidity
                         });
 
                     }
+                    Console.WriteLine("ADD  " + token.raw);
                     stack.Push(token);
                 }
                 else if (token.type == TokenType.LeftBracket)
                 {
                     depth++;
+
+                    while (stack.Count > 0)
+                    {
+                        if ((stack.Peek().type == TokenType.LeftBracket))
+                        {
+                            stack.Pop();
+                            break;
+                        }
+
+                        var t = stack.Pop();
+                        sexps.Add(new SToken()
+                        {
+                            type = t.stype,
+                            raw = t.raw
+                        });
+                    }
+
                     sexps.Add(new SToken()
                     {
                         type = STokenType.EndBlock,

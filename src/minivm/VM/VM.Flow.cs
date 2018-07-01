@@ -18,6 +18,16 @@ namespace minivm
                 else if (x > op) ctx.state.Push(1);
                 else if (x < op) ctx.state.Push(-1);
             });
+            Handle(Opcode.G, (double x, double y) =>
+            {
+                if (x < y) ctx.state.Push(1);
+                else ctx.state.Push(0);
+            });
+            Handle(Opcode.L, (double x, double y) =>
+            {
+                if (x > y) ctx.state.Push(1);
+                else ctx.state.Push(0);
+            });
 
             HandleWithOperand(Opcode.Call, (op) => {
                 var p = callTable[op]; ;

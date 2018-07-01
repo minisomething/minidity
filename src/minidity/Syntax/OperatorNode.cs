@@ -38,6 +38,13 @@ namespace minidity
                 case "/":
                     emitter.Emit(Opcode.Div);
                     break;
+
+                case ">":
+                    emitter.Emit(Opcode.G);
+                    break;
+                case "<":
+                    emitter.Emit(Opcode.L);
+                    break;
             }
         }
 

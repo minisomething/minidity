@@ -14,7 +14,7 @@ namespace minivm
             HandleWithOperand(Opcode.Ldloc, (op) => ctx.state.Push(ctx.callStack.GetLocal(op)));
 
             HandleWithOperand(Opcode.Ststate, (x, op) => stateProvider.SetState(op, x));
-            HandleWithOperand(Opcode.Ldstate, (x, op) => ctx.state.Push(stateProvider.GetState(op)));
+            HandleWithOperand(Opcode.Ldstate, (op) => ctx.state.Push(stateProvider.GetState(op)));
         }
     }
 }

@@ -17,7 +17,7 @@ namespace minidity
         public IfNode(SyntaxNode parent) :
             base(parent)
         {
-            capacity = 3;
+            capacity = 2;
         }
 
         public override void Emit(BuildContext ctx, Emitter emitter)

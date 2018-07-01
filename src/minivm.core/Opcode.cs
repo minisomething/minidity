@@ -20,7 +20,7 @@ namespace minivm
         Add, Sub, Mul, Div,
 
         // IF
-        Cmp,
+        Cmp, G, Ge, L, Le,
 
         // CALL
         Call, Calli, Callthis,

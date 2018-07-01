@@ -18,9 +18,16 @@ namespace testbed
 public global_a;
 
 def _ctor(){
-global_a = 1234;
+
+global_a = 123;
+if (1 > 2) {
+    global_a = 4444;
+}
+
 
 Chain.transfer(""1111"", 1);
+
+Console.print(global_a);
 
 ret ""jhello"";
 }

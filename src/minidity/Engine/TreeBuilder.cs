@@ -17,7 +17,8 @@ namespace minidity
             SToken prevToken = null;
             foreach (var token in tokens)
             {
-                Console.WriteLine($"{current.GetType()} : " + token.raw + " " + token.type.ToString());
+                //Console.WriteLine($"{current.GetType()} : " + token.raw + " " + token.type.ToString());
+                Console.WriteLine(token.raw + " / " + token.type);
 
                 if (token.type == STokenType.Operator)
                 {
