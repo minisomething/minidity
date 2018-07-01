@@ -19,6 +19,8 @@ public global_a;
 
 def _ctor(){
 
+c = (2 + 1 ) * (3 + 1);
+
 f = 1;
 
 n = 2;
@@ -41,6 +43,14 @@ def bb(a,b) {
 }
 
 }";
+
+            src = @"
+class A{ 
+def _ctor(){
+;c = (2 + 1 ) * (3 + 1);;
+}
+}
+    ";
 
             var program = MinidityCompiler.BuildProgram(src);
             var vm = new VM<MemStateProvider>(true);

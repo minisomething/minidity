@@ -177,15 +177,12 @@ namespace minidity
                     token.type == TokenType.Semicolon ||
                     token.type == TokenType.Comma)
                 {
-                    Console.WriteLine("SEMICOLON " + token.priority);
                     while (stack.Count > 0)
                     {
-                        Console.WriteLine($"COM  {stack.Peek().raw} / {stack.Peek().priority}");
                         if (stack.Peek().priority <= token.priority)
                             break;
 
                         var t = stack.Pop();
-                        Console.WriteLine("ADD " + t.raw);
                         stokens.Add(new SToken()
                         {
                             type = STokenType.Operator,
@@ -201,15 +198,16 @@ namespace minidity
                 }
                 else if (token.type == TokenType.Operator)
                 {
-                    while (true)
+                    Console.WriteLine("STACK " + stack.Count);
+                    while (stack.Count > 0)
                     {
-                        if (stack.Count == 0)
-                            break;
+                        Console.WriteLine("STACK " + stack.Peek().raw);
 
                         if (stack.Peek().priority <= token.priority)
                             break;
 
                         var t = stack.Pop();
+                        Console.WriteLine("ADDD " + t.raw);
                         stokens.Add(new SToken()
                         {
                             type = STokenType.Operator,
@@ -288,10 +286,21 @@ namespace minidity
                 {
                     while (stack.Count > 0)
                     {
+                        Console.WriteLine("PEEK " + stack.Peek().raw);
+
                         if ((stack.Peek().type == TokenType.LeftParen))
                         {
-                            stack.Pop(); // LeftParen
-                            var tt = stack.Pop();
+                            var leftParen = stack.Pop(); // LeftParen
+
+                            if (stack.Count == 0)
+                                break;
+                            var tt = stack.Peek();
+                            if (depth >= innerMethod &&
+                                tt.type != TokenType.Keyword &&
+                                tt.type != TokenType.Ident)
+                                break;
+
+                            stack.Pop();
 
                             if (depth >= innerMethod)
                             {
@@ -329,7 +338,11 @@ namespace minidity
                             break;
                         }
 
+                        
+                        foreach (var c in stack)
+                            Console.WriteLine(c.raw);
                         var t = stack.Pop();
+                        Console.WriteLine("POPEED " + t.raw);
                         stokens.Add(new SToken()
                         {
                             type = t.stype,

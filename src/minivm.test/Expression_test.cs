@@ -8,6 +8,8 @@ namespace minivm.test
     [TestClass]
     public class Expression_test
     {
+        private readonly string MSig = "A::_ctor";
+
         private string CreateExecutable(string exp)
         {
             return @"class A{ def _ctor(){" + exp + "}}";
@@ -19,7 +21,7 @@ namespace minivm.test
             var p = MinidityCompiler.BuildProgram(src);
             var vm = new VM<MemStateProvider>();
 
-            return vm.Execute(null, p.instructions, int.MaxValue, out _);
+            return vm.Execute(p.abi, p.instructions, MSig, int.MaxValue, out _);
         }
 
         [TestMethod]
