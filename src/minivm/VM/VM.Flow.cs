@@ -12,6 +12,11 @@ namespace minivm
 
         private void InitFlow()
         {
+            Handle(Opcode.Abort, () =>
+            {
+                halt = true;
+            });
+
             HandleWithOperand(Opcode.Cmp, (double x, double op) =>
             {
                 if (x == op) ctx.state.Push(0);

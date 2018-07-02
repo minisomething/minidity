@@ -24,10 +24,11 @@ namespace minidity
             foreach (var arg in args)
                 arg.Emit(ctx, emitter);
 
-            if (ident.ident.Contains("."))
-                emitter.Emit(Opcode.Call, ident.ident);
-            else
+            if (ctx.currentClass.methods.Any(x => x.ident.ident == ident.ident))
                 emitter.Emit(Opcode.Call, ABISignature.Method(ctx.currentClass.ident.ident, ident.ident));
+            else
+            //if (ident.ident.Contains("."))
+                emitter.Emit(Opcode.Call, ident.ident);
         }
     }
 }

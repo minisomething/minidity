@@ -47,6 +47,9 @@ def bb(a,b) {
             src = @"
 class A{ 
 def _ctor(){
+
+require(2 > 1);
+
 a = ""asdf"";
 ret a;
 }
@@ -68,8 +71,13 @@ ret a;
                 1000, out _);
 
             Console.WriteLine(vm.stateProvider.GetState(ABISignature.Field("foo","global")));
-            Console.WriteLine(ret.GetType());
-            Console.WriteLine(ret);
+            if (ret != null)
+            {
+                Console.WriteLine(ret.GetType());
+                Console.WriteLine(ret);
+            }
+            else
+                Console.WriteLine("RET NULL");
         }
     }
 }

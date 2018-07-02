@@ -21,6 +21,8 @@ namespace minivm
             callTable["tx.value"] = -1;
 
             callTable["now"] = -1;
+
+            callTable["require"] = -1;
         }
 
         private void _RegisterInternalCall(string signature, Action callback)
@@ -100,6 +102,12 @@ namespace minivm
             {
                 // [FIXME] FileTime -> UnixTime
                 ctx.state.Push(DateTime.Now.ToFileTimeUtc());
+            }
+
+            else if (signature == "require")
+            {
+                var p = Convert.ToInt32(ctx.state.Pop());
+                if (p == 0) halt = true;
             }
         }
     }

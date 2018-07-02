@@ -10,6 +10,8 @@ namespace minivm
     {
         Nop,
 
+        Abort,
+
         Ret,
 
         // STACK-MANAGEMENT
