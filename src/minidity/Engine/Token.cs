@@ -8,7 +8,13 @@ namespace minidity
 {
     public class Token
     {
+        /// <summary>
+        /// Lex token type
+        /// </summary>
         public TokenType type { get; set; }
+        /// <summary>
+        /// Literal type (Only valid if type is .Literal)
+        /// </summary>
         public LiteralType literalType { get; set; }
         public STokenType stype { get; set; }
 
@@ -25,7 +31,13 @@ namespace minidity
 
     public class SToken
     {
+        /// <summary>
+        /// Sexp token type
+        /// </summary>
         public STokenType type { get; set; }
+        /// <summary>
+        /// Literal type (Only valid if type is .Literal)
+        /// </summary>
         public LiteralType literalType { get; set; }
 
         public string raw { get; set; }
