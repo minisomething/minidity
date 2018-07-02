@@ -53,6 +53,7 @@
     <Compile Include="Expression_test.cs" />
     <Compile Include="If_test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="require_test.cs" />
     <Compile Include="Variable_test.cs" />
   </ItemGroup>
   <ItemGroup>
