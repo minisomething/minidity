@@ -47,7 +47,8 @@ def bb(a,b) {
             src = @"
 class A{ 
 def _ctor(){
-;c = (2 + 1 ) * (3 + 1);;
+a = ""asdf"";
+ret a;
 }
 }
     ";
@@ -67,6 +68,7 @@ def _ctor(){
                 1000, out _);
 
             Console.WriteLine(vm.stateProvider.GetState(ABISignature.Field("foo","global")));
+            Console.WriteLine(ret.GetType());
             Console.WriteLine(ret);
         }
     }

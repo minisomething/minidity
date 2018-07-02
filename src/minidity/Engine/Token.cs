@@ -9,7 +9,9 @@ namespace minidity
     public class Token
     {
         public TokenType type { get; set; }
+        public LiteralType literalType { get; set; }
         public STokenType stype { get; set; }
+
         public string raw { get; set; }
         public int priority { get; set; }
 
@@ -24,6 +26,8 @@ namespace minidity
     public class SToken
     {
         public STokenType type { get; set; }
+        public LiteralType literalType { get; set; }
+
         public string raw { get; set; }
     }
 }

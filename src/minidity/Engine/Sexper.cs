@@ -133,6 +133,7 @@ namespace minidity
                     stokens.Add(new SToken()
                     {
                         type = STokenType.Literal,
+                        literalType = token.literalType,
                         raw = token.raw
                     });
                 }
@@ -184,16 +185,12 @@ namespace minidity
                 }
                 else if (token.type == TokenType.Operator)
                 {
-                    Console.WriteLine("STACK " + stack.Count);
                     while (stack.Count > 0)
                     {
-                        Console.WriteLine("STACK " + stack.Peek().raw);
-
                         if (stack.Peek().priority <= token.priority)
                             break;
 
                         var t = stack.Pop();
-                        Console.WriteLine("ADDD " + t.raw);
                         stokens.Add(new SToken()
                         {
                             type = STokenType.Operator,
@@ -201,7 +198,6 @@ namespace minidity
                         });
 
                     }
-                    Console.WriteLine("ADD  " + token.raw);
                     stack.Push(token);
                 }
                 else if (token.type == TokenType.LeftBracket)
@@ -235,8 +231,6 @@ namespace minidity
                 {
                     while (stack.Count > 0)
                     {
-                        Console.WriteLine("PEEK " + stack.Peek().raw);
-
                         if ((stack.Peek().type == TokenType.LeftParen))
                         {
                             var leftParen = stack.Pop(); // LeftParen
@@ -288,10 +282,7 @@ namespace minidity
                         }
 
 
-                        foreach (var c in stack)
-                            Console.WriteLine(c.raw);
                         var t = stack.Pop();
-                        Console.WriteLine("POPEED " + t.raw);
                         stokens.Add(new SToken()
                         {
                             type = t.stype,
@@ -336,7 +327,6 @@ namespace minidity
                                     raw = token.raw
                                 });
                             }
-
 
                             break;
                         case "else":

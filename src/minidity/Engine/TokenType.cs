@@ -22,6 +22,13 @@ namespace minidity
         RetType
     }
 
+    public enum LiteralType
+    {
+        String,
+        Integer,
+        Double
+    }
+
     public enum STokenType
     {
         None,

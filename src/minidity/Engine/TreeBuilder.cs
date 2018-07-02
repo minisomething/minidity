@@ -64,7 +64,19 @@ namespace minidity
                 else if (token.type == STokenType.Literal)
                 {
                     var node = new LiteralNode(current);
-                    node.value = token.raw;
+
+                    switch (token.literalType)
+                    {
+                        case LiteralType.String:
+                            node.value = token.raw;
+                            break;
+                        case LiteralType.Integer:
+                            node.value = int.Parse(token.raw);
+                            break;
+                        case LiteralType.Double:
+                            node.value = double.Parse(token.raw);
+                            break;
+                    }
                     current = current.Append(node);
                 }
                 else if (token.type == STokenType.BeginBlock)

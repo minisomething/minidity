@@ -146,6 +146,7 @@ namespace minidity
                 return new Token()
                 {
                     raw = str.Substring(1, str.Length - 2),
+                    literalType = LiteralType.String,
                     type = TokenType.Literal
                 };
             }
@@ -168,6 +169,7 @@ namespace minidity
                 return new Token()
                 {
                     raw = str,
+                    literalType = LiteralType.Integer,
                     type = TokenType.Literal
                 };
             }
@@ -180,6 +182,7 @@ namespace minidity
                 return new Token()
                 {
                     raw = str,
+                    literalType = LiteralType.Double,
                     type = TokenType.Literal
                 };
             }

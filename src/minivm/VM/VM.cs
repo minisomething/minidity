@@ -80,7 +80,7 @@ namespace minivm
                 ctx.current = inst;
 
                 if (verbose)
-                    Console.WriteLine($" - {inst.code, -6} | {inst.operand, 17}");
+                    Console.WriteLine($" - {inst.code, -6} | {inst.operand, 17} | {inst.operand?.GetType()}");
 
                 var gp = GasTable.GetGasPrice(inst.code);
                 gasLimit -= gp;
@@ -137,11 +137,11 @@ namespace minivm
                 cb(ctx.state.PopDouble(), Convert.ToDouble(ctx.current.operand));
             });
         }
-        private void HandleWithOperand(Opcode code, Action<double, string> cb)
+        private void HandleWithOperand(Opcode code, Action<object, string> cb)
         {
             Register(code, () =>
             {
-                cb(ctx.state.PopDouble(), (string)(ctx.current.operand));
+                cb(ctx.state.Pop(), (string)(ctx.current.operand));
             });
         }
         private void HandleWithOperand(Opcode code, Action<string> cb)
