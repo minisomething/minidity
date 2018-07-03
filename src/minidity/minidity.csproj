@@ -57,6 +57,7 @@
     <Compile Include="Syntax\ClassNode.cs" />
     <Compile Include="Syntax\IdentNode.cs" />
     <Compile Include="Syntax\IfNode.cs" />
+    <Compile Include="Syntax\IndexerNode.cs" />
     <Compile Include="Syntax\LiteralNode.cs" />
     <Compile Include="Syntax\MethodNode.cs" />
     <Compile Include="Syntax\OperatorNode.cs" />

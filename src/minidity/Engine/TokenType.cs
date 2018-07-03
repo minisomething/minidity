@@ -16,6 +16,7 @@ namespace minidity
         Operator,
         LeftParen, RightParen,
         LeftBracket, RightBracket,
+        LeftSquareBracket, RightSquareBracket,
         Colon,
         Semicolon,
         Comma,
@@ -57,5 +58,7 @@ namespace minidity
         Else,
 
         Operator,
+
+        Indexer
     }
 }

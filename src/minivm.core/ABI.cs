@@ -30,5 +30,11 @@ namespace minivm
         {
             return contract + "::" + field;
         }
+        public static string Dictionary(string ident, object literal)
+        {
+            if (literal == null)
+                return ident + "^null";
+            return ident + $"^{literal.GetType().Name}_{literal.ToString()}";
+        }
     }
 }

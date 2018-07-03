@@ -55,11 +55,11 @@ namespace minidity
     }
     public class AssignmentNode : SyntaxNode
     {
-        public IdentNode ident
+        public SyntaxNode key
         {
             get
             {
-                return (IdentNode)children[0];
+                return (SyntaxNode)children[0];
             }
         }
         public SyntaxNode value
@@ -79,10 +79,32 @@ namespace minidity
         {
             value.Emit(ctx, emitter);
 
-            if (ctx.currentClass.fields.Any(x => x.ident.ident == ident.ident))
-                emitter.Emit(Opcode.Ststate, ABISignature.Field(ctx.currentClass.ident.ident,  ident.ident));
+            if (key is IdentNode ident)
+            {
+                if (ctx.currentClass.fields.Any(x => x.ident.ident == ident.ident))
+                    emitter.Emit(Opcode.Ststate, ABISignature.Field(ctx.currentClass.ident.ident, ident.ident));
+                else
+                    emitter.Emit(Opcode.Stloc, ident.ident);
+            }
+            // Can be optimised
+            else if (key is IndexerNode idx &&
+                idx.key is IdentNode keyIdent &&
+                idx.index is LiteralNode idxLiteral)
+            {
+                if (ctx.currentClass.fields.Any(x => x.ident.ident == keyIdent.ident))
+                {
+                    emitter.Emit(Opcode.Ststate,
+                        ABISignature.Dictionary(
+                            ABISignature.Field(ctx.currentClass.ident.ident, keyIdent.ident),
+                            idxLiteral.value));
+                }
+                else
+                    emitter.Emit(Opcode.Stloc, ABISignature.Dictionary(keyIdent.ident, idxLiteral.value.ToString()));
+            }
             else
-                emitter.Emit(Opcode.Stloc, ident.ident);
+            {
+                // TODO : stloc2 opcode
+            }
         }
     }
 }

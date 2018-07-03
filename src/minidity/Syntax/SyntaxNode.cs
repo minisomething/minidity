@@ -63,6 +63,12 @@ namespace minidity
                 return nearestIncompletedParent;
             return this;
         }
+        public SyntaxNode Pop()
+        {
+            var last = children.Last();
+            children.Remove(last);
+            return last;
+        }
         public virtual void Emit(BuildContext ctx, Emitter emitter)
         {
             foreach (var child in children)

@@ -15,6 +15,7 @@ namespace minivm
             Handle(Opcode.Abort, () =>
             {
                 halt = true;
+                ctx.state.Push(Ret.Abort);
             });
 
             HandleWithOperand(Opcode.Cmp, (double x, double op) =>

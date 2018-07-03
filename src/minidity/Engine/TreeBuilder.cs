@@ -41,6 +41,13 @@ namespace minidity
                 {
                     //current = current.parent; 
                 }
+                else if (token.type == STokenType.Indexer)
+                {
+                    var node = new IndexerNode(current);
+                    node.Append(current.Pop());
+                    current.Append(node);
+                    current = node;
+                }
                 else if (token.type == STokenType.Call)
                 {
                     var node = new CallMethodNode(current);

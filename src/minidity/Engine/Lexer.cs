@@ -50,6 +50,9 @@ namespace minidity
 
             AddToken("{", TokenType.LeftBracket, -10000);
             AddToken("}", TokenType.RightBracket);
+
+            AddToken("[", TokenType.LeftSquareBracket);
+            AddToken("]", TokenType.RightSquareBracket, -1999);
         }
         private static void AddToken(string token, TokenType type, int priority = 0)
         {

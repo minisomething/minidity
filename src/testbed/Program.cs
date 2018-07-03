@@ -45,14 +45,34 @@ def bb(a,b) {
 }";
             
             src = @"
-class A{ 
-def _ctor(){
-
-require(2 > 1);
-
-a = ""asdf"";
-ret a;
-}
+class Mrc20 {
+  public totalSupply;
+  
+  public balances;
+  
+  def _ctor(_totalSupply) {
+    totalSupply = _totalSupply;
+    balances[tx.sender] = totalSupply;
+  }
+  
+  def transfer(address, amount) {
+    require(amount > 0);
+    require(balances[address] > amount);
+    
+    balances[address] = balances[address] + amount;
+    balances[tx.sender] = balances[tx.sender] - amount;
+  }
+  def transferFrom(from, to, amount) {
+  }
+  
+  def balanceOf(address) {
+    return balances[address];
+  }
+  
+  def approve(spender, amount) {
+  }
+  def allowance(owner, spender) {
+  }
 }
     ";
 
@@ -67,10 +87,21 @@ ret a;
                 Console.WriteLine($"{i.code} / {i.operand}");
 
             var ret = vm.Execute(program.abi, program.instructions,
-                ABISignature.Method("A", "_ctor"),
+                ABISignature.Method("Mrc20", "_ctor"),
+                new object[] { 1234 },
                 1000, out _);
 
-            Console.WriteLine(vm.stateProvider.GetState(ABISignature.Field("foo","global")));
+            ret = vm.Execute(program.abi, program.instructions,
+                ABISignature.Method("Mrc20", "transfer"),
+                new object[] { "qwer", 1000 },
+                1000, out _);
+
+            ret = vm.Execute(program.abi, program.instructions,
+                ABISignature.Method("Mrc20", "balanceOf"),
+                new object[] { },
+                1000, out _);
+
+            //Console.WriteLine(vm.stateProvider.GetState(ABISignature.Field("foo","global")));
             if (ret != null)
             {
                 Console.WriteLine(ret.GetType());

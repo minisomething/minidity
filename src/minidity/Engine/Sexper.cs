@@ -57,6 +57,18 @@ namespace minidity
                     tokens[i].priority = -10000;
                     tokens[i].raw = "}";
                 }
+                else if (tokens[i].type == TokenType.RightSquareBracket)
+                {
+                    tokens[i].type = TokenType.LeftSquareBracket;
+                    tokens[i].priority = -1000;
+                    tokens[i].raw = "[";
+                }
+                else if (tokens[i].type == TokenType.LeftSquareBracket)
+                {
+                    tokens[i].type = TokenType.RightSquareBracket;
+                    tokens[i].priority = -1000;
+                    tokens[i].raw = "]";
+                }
             }
 
 
@@ -221,6 +233,19 @@ namespace minidity
                     {
                         type = STokenType.BeginBlock,
                         raw = "{"
+                    });
+                }
+                else if (token.type == TokenType.LeftSquareBracket)
+                {
+                    stack.Push(token);
+                }
+                else if (token.type == TokenType.RightSquareBracket)
+                {
+                    FlushStackUntil(TokenType.LeftSquareBracket);
+                    stokens.Add(new SToken()
+                    {
+                        type = STokenType.Indexer,
+                        raw = "["
                     });
                 }
                 else if (token.type == TokenType.LeftParen)
