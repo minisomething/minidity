@@ -52,21 +52,21 @@ class Mrc20 {
   
   def _ctor(_totalSupply) {
     totalSupply = _totalSupply;
-    balances[tx.sender] = totalSupply;
+    balances[tx.sender()] = totalSupply;
   }
   
   def transfer(address, amount) {
     require(amount > 0);
-    require(balances[address] > amount);
+    require(balances[tx.sender()] > amount);
     
     balances[address] = balances[address] + amount;
-    balances[tx.sender] = balances[tx.sender] - amount;
+    balances[tx.sender()] = balances[tx.sender()] - amount;
   }
   def transferFrom(from, to, amount) {
   }
   
   def balanceOf(address) {
-    return balances[address];
+    ret balances[address];
   }
   
   def approve(spender, amount) {
@@ -98,7 +98,12 @@ class Mrc20 {
 
             ret = vm.Execute(program.abi, program.instructions,
                 ABISignature.Method("Mrc20", "balanceOf"),
-                new object[] { },
+                new object[] { "qwer" },
+                1000, out _);
+
+            ret = vm.Execute(program.abi, program.instructions,
+                ABISignature.Method("Mrc20", "balanceOf"),
+                new object[] { vm.stateProvider.tx.senderAddress },
                 1000, out _);
 
             //Console.WriteLine(vm.stateProvider.GetState(ABISignature.Field("foo","global")));

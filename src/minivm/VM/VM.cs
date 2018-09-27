@@ -89,6 +89,9 @@ namespace minivm
                 if (inst.code == Opcode.Nop) ;
                 else
                     processor[inst.code].Invoke();
+
+                if (halt)
+                    Console.WriteLine("HALT");
             }
 
             if (ctx.state.count == 0)

@@ -43,10 +43,22 @@ namespace minidity
                 }
                 else if (token.type == STokenType.Indexer)
                 {
-                    var node = new IndexerNode(current);
-                    node.Append(current.Pop());
-                    current.Append(node);
-                    current = node;
+                    var last = current.children.Last();
+
+                    if (last is RetNode retNode)
+                    {
+                        var node = new IndexerNode(current);
+                        node.Append(retNode.Pop());
+                        retNode.Append(node);
+                        current = node;
+                    }
+                    else
+                    {
+                        var node = new IndexerNode(current);
+                        node.Append(current.Pop());
+                        current.Append(node);
+                        current = node;
+                    }
                 }
                 else if (token.type == STokenType.Call)
                 {

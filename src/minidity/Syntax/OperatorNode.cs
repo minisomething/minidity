@@ -101,9 +101,20 @@ namespace minidity
                 else
                     emitter.Emit(Opcode.Stloc, ABISignature.Dictionary(keyIdent.ident, idxLiteral.value.ToString()));
             }
-            else
+            // 씨샵이상함
+            else if (key is IndexerNode idx2 &&
+                idx2.key is IdentNode keyIdent2)
             {
+                idx2.index.Emit(ctx, emitter);
+
                 // TODO : stloc2 opcode
+                if (ctx.currentClass.fields.Any(x => x.ident.ident == keyIdent2.ident))
+                {
+                    emitter.Emit(Opcode.Ststate2,
+                        ABISignature.Field(ctx.currentClass.ident.ident, keyIdent2.ident));
+                }
+                else
+                    emitter.Emit(Opcode.Stloc2, keyIdent2.ident);
             }
         }
     }

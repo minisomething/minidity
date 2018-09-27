@@ -31,8 +31,8 @@ namespace minivm
         Jmp, JmpG, JmpL, JmpEq, JmpGE, JmpLE,
 
         // STORE/LOAD
-        Ststate, Ldstate,
-        Stloc, Ldloc,
+        Ststate, Ststate2, Ldstate, Ldstate2,
+        Stloc, Stloc2, Ldloc,
 
         // DEBUG
         Print

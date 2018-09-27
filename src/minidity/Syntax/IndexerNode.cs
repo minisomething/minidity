@@ -26,16 +26,31 @@ namespace minidity
                 object idx = null;
 
                 if (index is LiteralNode idxLiteral)
+                {
                     idx = idxLiteral.value;
 
-                if (ctx.currentClass.fields.Any(x => x.ident.ident == keyIdent.ident)) {
-                    emitter.Emit(Opcode.Ldstate, 
-                        ABISignature.Dictionary(
-                            ABISignature.Field(ctx.currentClass.ident.ident, keyIdent.ident),
-                            idx));
+                    if (ctx.currentClass.fields.Any(x => x.ident.ident == keyIdent.ident))
+                    {
+                        emitter.Emit(Opcode.Ldstate,
+                            ABISignature.Dictionary(
+                                ABISignature.Field(ctx.currentClass.ident.ident, keyIdent.ident),
+                                idx));
+                    }
+                    else
+                        emitter.Emit(Opcode.Ldloc, ABISignature.Dictionary(keyIdent.ident, idx));
                 }
                 else
-                    emitter.Emit(Opcode.Ldloc, ABISignature.Dictionary(keyIdent.ident, idx));
+                {
+                    index.Emit(ctx, emitter);
+
+                    if (ctx.currentClass.fields.Any(x => x.ident.ident == keyIdent.ident))
+                    {
+                        emitter.Emit(Opcode.Ldstate2,
+                            ABISignature.Field(ctx.currentClass.ident.ident, keyIdent.ident));
+                    }
+                    else
+                        emitter.Emit(Opcode.Ldloc, ABISignature.Dictionary(keyIdent.ident, idx));
+                }
             }
         }
     }
