@@ -43,6 +43,7 @@ namespace minidity
             AddToken("ret", TokenType.Keyword);
             AddToken("class", TokenType.Keyword);
             AddToken("def", TokenType.Keyword);
+            AddToken("event", TokenType.Keyword);
             AddToken("public", TokenType.Keyword);
             AddToken("private", TokenType.Keyword);
             AddToken("(", TokenType.LeftParen, -2000);

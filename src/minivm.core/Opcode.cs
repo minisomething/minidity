@@ -12,7 +12,10 @@ namespace minivm
 
         Abort,
 
+        // CALL
         Ret,
+        EmitEvent,
+        Call, Calli, Callthis,
 
         // STACK-MANAGEMENT
         Push, Pop,
@@ -23,9 +26,6 @@ namespace minivm
 
         // IF
         Cmp, G, Ge, L, Le,
-
-        // CALL
-        Call, Calli, Callthis,
 
         // JUMP
         Jmp, JmpG, JmpL, JmpEq, JmpGE, JmpLE,

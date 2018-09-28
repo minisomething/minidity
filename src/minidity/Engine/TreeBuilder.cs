@@ -60,6 +60,16 @@ namespace minidity
                         current = node;
                     }
                 }
+                else if (token.type == STokenType.EventCall)
+                {
+                    var node = new EmitEventNode(current);
+                    node.Append(new IdentNode(node)
+                    {
+                        ident = token.raw
+                    });
+                    current.Append(node);
+                    current = node;
+                }
                 else if (token.type == STokenType.Call)
                 {
                     var node = new CallMethodNode(current);
@@ -121,6 +131,15 @@ namespace minidity
                     current = node;
 
                     currentClass = node;
+                }
+                else if (
+                    token.type == STokenType.Event)
+                {
+                    var node = new EventDeclationNode(current);
+                    current.Append(node);
+                    current = node;
+
+                    currentClass.AddEvent(node);
                 }
                 else if (
                     token.type == STokenType.Public ||

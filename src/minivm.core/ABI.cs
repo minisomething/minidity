@@ -9,7 +9,13 @@ namespace minivm
     [Serializable]
     public class Method
     {
+        /// <summary>
+        /// Method signature such as `FMATH::SUM`
+        /// </summary>
         public string signature;
+        /// <summary>
+        /// Instruction offset
+        /// </summary>
         public int entry;
     }
 

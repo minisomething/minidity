@@ -55,6 +55,8 @@
     <Compile Include="Syntax\BlockNode.cs" />
     <Compile Include="Syntax\CallMethodNode.cs" />
     <Compile Include="Syntax\ClassNode.cs" />
+    <Compile Include="Syntax\EmitEventNode.cs" />
+    <Compile Include="Syntax\EventDeclationNode.cs" />
     <Compile Include="Syntax\IdentNode.cs" />
     <Compile Include="Syntax\IfNode.cs" />
     <Compile Include="Syntax\IndexerNode.cs" />

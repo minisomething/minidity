@@ -12,6 +12,8 @@ namespace minivm
 
         private void InitInternalCall()
         {
+            internalCalls = new Dictionary<string, Action>();
+
             callTable["Math.pow"] = -1;
             callTable["Console.print"] = -1;
             callTable["Chain.getBlockNo"] = -1;

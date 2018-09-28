@@ -282,11 +282,22 @@ namespace minidity
                                 }
                                 else if (tt.type == TokenType.Ident)
                                 {
-                                    stokens.Add(new SToken()
+                                    if (tt.raw[0] == '$')
                                     {
-                                        type = STokenType.Call,
-                                        raw = tt.raw
-                                    });
+                                        stokens.Add(new SToken()
+                                        {
+                                            type = STokenType.EventCall,
+                                            raw = tt.raw.Substring(1)
+                                        });
+                                    }
+                                    else
+                                    {
+                                        stokens.Add(new SToken()
+                                        {
+                                            type = STokenType.Call,
+                                            raw = tt.raw
+                                        });
+                                    }
                                 }
                             }
                             else
@@ -365,6 +376,14 @@ namespace minidity
                             stokens.Add(new SToken()
                             {
                                 type = STokenType.Method,
+                                raw = token.raw
+                            });
+                            break;
+
+                        case "event":
+                            stokens.Add(new SToken()
+                            {
+                                type = STokenType.Event,
                                 raw = token.raw
                             });
                             break;

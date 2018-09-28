@@ -119,6 +119,7 @@
     <Compile Include="VM\IStateProvider.cs" />
     <Compile Include="VM\VM.cs" />
     <Compile Include="VM\VM.Debug.cs" />
+    <Compile Include="VM\VM.Event.cs" />
     <Compile Include="VM\VM.Flow.cs" />
     <Compile Include="VM\VM.InternalCall.cs" />
     <Compile Include="VM\VM.Stack.cs" />

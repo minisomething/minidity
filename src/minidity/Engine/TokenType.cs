@@ -36,7 +36,7 @@ namespace minidity
 
         Endl,
 
-        Call,
+        Call, EventCall,
         EndCall,
         Ident,
         Literal,
@@ -44,6 +44,7 @@ namespace minidity
         Class,
         Method,
 
+        Event,
         Public, Private,
 
         Param,

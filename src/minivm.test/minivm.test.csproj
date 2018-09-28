@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Assignment_test.cs" />
     <Compile Include="baseclass.cs" />
+    <Compile Include="event_test.cs" />
     <Compile Include="Expression_test.cs" />
     <Compile Include="If_test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

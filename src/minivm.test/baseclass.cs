@@ -20,7 +20,16 @@ namespace minivm.test
             var p = MinidityCompiler.BuildProgram(src);
             var vm = new VM<MemStateProvider>();
 
-            return vm.Execute(p.abi, p.instructions, MSig, int.MaxValue, out _);
+            return vm.Execute(p.abi, p.instructions, MSig, int.MaxValue).ret;
+        }
+        protected ExeResult Execute2(string exp)
+        {
+            var src = CreateExecutable(exp);
+
+            var p = MinidityCompiler.BuildProgram(src);
+            var vm = new VM<MemStateProvider>();
+
+            return vm.Execute(p.abi, p.instructions, MSig, int.MaxValue);
         }
     }
 }

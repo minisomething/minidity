@@ -49,6 +49,7 @@ class Mrc20 {
   public totalSupply;
   
   public balances;
+  public allowed;
   
   def _ctor(_totalSupply) {
     totalSupply = _totalSupply;
@@ -61,6 +62,8 @@ class Mrc20 {
     
     balances[address] = balances[address] + amount;
     balances[tx.sender()] = balances[tx.sender()] - amount;
+
+    $transfer(tx.sender(), address, amount);
   }
   def transferFrom(from, to, amount) {
   }
@@ -70,6 +73,8 @@ class Mrc20 {
   }
   
   def approve(spender, amount) {
+    allowed[tx.sender()][spender] = amount;
+    $approval(tx.sender(), spender, amount);
   }
   def allowance(owner, spender) {
   }
@@ -89,22 +94,22 @@ class Mrc20 {
             var ret = vm.Execute(program.abi, program.instructions,
                 ABISignature.Method("Mrc20", "_ctor"),
                 new object[] { 1234 },
-                1000, out _);
+                1000);
 
             ret = vm.Execute(program.abi, program.instructions,
                 ABISignature.Method("Mrc20", "transfer"),
                 new object[] { "qwer", 1000 },
-                1000, out _);
+                1000);
 
             ret = vm.Execute(program.abi, program.instructions,
                 ABISignature.Method("Mrc20", "balanceOf"),
                 new object[] { "qwer" },
-                1000, out _);
+                1000);
 
             ret = vm.Execute(program.abi, program.instructions,
                 ABISignature.Method("Mrc20", "balanceOf"),
                 new object[] { vm.stateProvider.tx.senderAddress },
-                1000, out _);
+                1000);
 
             //Console.WriteLine(vm.stateProvider.GetState(ABISignature.Field("foo","global")));
             if (ret != null)

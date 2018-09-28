@@ -16,12 +16,15 @@ namespace minivm
         public VMState state;
         public CallStack callStack;
 
+        public List<EventData> events;
+
         public ExeContext(Instruction[] _instructions)
         {
             instructions = _instructions;
 
             state = new VMState();
             callStack = new CallStack(this);
+            events = new List<EventData>();
         }
     }
 }

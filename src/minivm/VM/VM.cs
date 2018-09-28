@@ -28,30 +28,31 @@ namespace minivm
             InitDebug();
             InitFlow();
             InitVariable();
+            InitEvent();
         }
 
-        public object Execute(byte[] raw, string methodSignature, object[] args, int gasLimit, out int gasUsed)
+        public ExeResult Execute(byte[] raw, string methodSignature, object[] args, int gasLimit)
         {
             (var abi, var insts) = BConv.FromBytes(raw);
-            return Execute(abi, insts, methodSignature, args, gasLimit, out gasUsed);
+            return Execute(abi, insts, methodSignature, args, gasLimit);
         }
-        public object Execute(
+        public ExeResult Execute(
             ABI abi, Instruction[] instructions,
             string methodSignature,
-            int gasLimit, out int gasUsed)
+            int gasLimit)
         {
             return Execute(abi, instructions,
                 methodSignature, new object[] { },
-                gasLimit, out gasUsed);
+                gasLimit);
         }
-        public object Execute(
+        public ExeResult Execute(
             ABI abi, Instruction[] instructions,
             string methodSignature, object[] args,
-            int gasLimit, out int gasUsed)
+            int gasLimit)
         {
             BuildCalltableFromAbi(abi);
 
-            gasUsed = 0;
+            var gasUsed = 0;
             halt = false;
             ctx = new ExeContext(instructions);
             var targetMethod = abi.methods
@@ -89,14 +90,18 @@ namespace minivm
                 if (inst.code == Opcode.Nop) ;
                 else
                     processor[inst.code].Invoke();
-
-                if (halt)
-                    Console.WriteLine("HALT");
             }
 
-            if (ctx.state.count == 0)
-                return null;
-            else return ctx.state.Pop();
+            var result = new ExeResult()
+            {
+                events = ctx.events.ToArray(),
+                gasUsed = gasUsed
+            };
+
+            if (ctx.state.count != 0)
+                result.ret = ctx.state.Pop();
+
+            return result;
         }
 
         private void Register(Opcode code, Action cb)

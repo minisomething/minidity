@@ -12,6 +12,7 @@ namespace minidity
         public FieldDeclationNode[] fields => _fields.ToArray();
         public MethodNode[] methods => _methods.ToArray();
 
+        private List<EventDeclationNode> _events;
         private List<FieldDeclationNode> _fields;
         private List<MethodNode> _methods;
 
@@ -20,8 +21,13 @@ namespace minidity
         {
             _fields = new List<FieldDeclationNode>();
             _methods = new List<MethodNode>();
+            _events = new List<EventDeclationNode>();
         }
 
+        public void AddEvent(EventDeclationNode ev)
+        {
+            _events.Add(ev);
+        }
         public void AddField(FieldDeclationNode field)
         {
             _fields.Add(field);
