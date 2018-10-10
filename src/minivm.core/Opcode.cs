@@ -28,7 +28,9 @@ namespace minivm
         Cmp, G, Ge, L, Le,
 
         // JUMP
-        Jmp, JmpG, JmpL, JmpEq, JmpGE, JmpLE,
+        Jmp,
+        JmpTrue,
+        JmpG, JmpL, JmpEq, JmpGE, JmpLE,
 
         // STORE/LOAD
         Ststate, Ststate2, Ldstate, Ldstate2,

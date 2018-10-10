@@ -26,6 +26,13 @@ namespace minidity
 
                     if (token.raw == "=")
                         node = new AssignmentNode(current);
+                    else if (token.raw == "++" || token.raw == "--")
+                    {
+                        node = new StandaloneOperatorNode(current)
+                        {
+                            op = token.raw
+                        };
+                    }
                     else
                     {
                         node = new OperationNode(current)
@@ -163,6 +170,12 @@ namespace minidity
                     current.Append(node);
                     current = node;
                 }
+                else if (token.type == STokenType.For)
+                {
+                    var node = new ForNode(current);
+                    current.Append(node);
+                    current = node;
+                }
                 else if (token.type == STokenType.Else)
                 {
                     // Get back to last node
@@ -181,6 +194,8 @@ namespace minidity
 
                 prevToken = token;
             }
+
+            VNodeTransformer.Transform(root);
 
             return root;
         }

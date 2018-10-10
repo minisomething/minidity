@@ -58,6 +58,8 @@ namespace minidity
         If,
         Else,
 
+        For,
+
         Operator,
 
         Indexer

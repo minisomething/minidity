@@ -24,6 +24,9 @@ namespace minidity
             AddToken("==", TokenType.Operator, 1);
             AddToken("=", TokenType.Operator);
 
+            AddToken("++", TokenType.Operator, 2);
+            AddToken("--", TokenType.Operator, 2);
+
             AddToken("+", TokenType.Operator, 2);
             AddToken("-", TokenType.Operator, 2);
             AddToken("*", TokenType.Operator, 4);
@@ -37,6 +40,7 @@ namespace minidity
             AddToken(",", TokenType.Comma, -1000);
             AddToken(";", TokenType.Semicolon, -9999);
             AddToken("if", TokenType.Keyword);
+            AddToken("for", TokenType.Keyword, -99999);
             AddToken("else", TokenType.Keyword);
             AddToken("void", TokenType.Keyword);
             AddToken("var", TokenType.Keyword);

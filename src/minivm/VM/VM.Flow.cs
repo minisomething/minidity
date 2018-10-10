@@ -67,6 +67,10 @@ namespace minivm
             {
                 if (x == 0) ctx.instructionCursor = op;
             });
+            HandleWithOperand(Opcode.JmpTrue, (x, op) =>
+            {
+                if (x != 0) ctx.instructionCursor = op;
+            });
         }
 
         private void BuildCalltableFromAbi(ABI abi)

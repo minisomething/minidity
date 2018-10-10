@@ -8,6 +8,22 @@ using minivm;
 
 namespace minidity
 {
+    public class StandaloneOperatorNode : VirtualNode
+    {
+        public string op { get; set; }
+        public SyntaxNode left => children[0];
+
+        public StandaloneOperatorNode(SyntaxNode parent)
+            : base(parent)
+        {
+            capacity = 1;
+        }
+
+        public override string ToString()
+        {
+            return $"{base.ToString()}({op})";
+        }
+    }
     public class OperationNode : SyntaxNode
     {
         public string op { get; set; }

@@ -81,6 +81,17 @@ class Mrc20 {
 }
     ";
 
+            src = @"
+class Mrc20 {
+
+def _ctor() {
+for (i=0;i<10;i++) {
+Console.print(i);
+}
+}
+}
+";
+
             var program = MinidityCompiler.BuildProgram(src);
             var vm = new VM<MemStateProvider>(true);
 

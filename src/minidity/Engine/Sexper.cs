@@ -33,18 +33,22 @@ namespace minidity
             for (var i = 0; i < tokens.Count; i++)
             {
                 if (tokens[i].type == TokenType.LeftParen)
+                {
                     tokens[i] = new Token()
                     {
                         type = TokenType.RightParen,
                         raw = ")"
                     };
+                }
                 else if (tokens[i].type == TokenType.RightParen)
+                {
                     tokens[i] = new Token()
                     {
                         type = TokenType.LeftParen,
                         raw = "(",
                         priority = -1500
                     };
+                }
                 else if (tokens[i].type == TokenType.RightBracket)
                 {
                     tokens[i].type = TokenType.LeftBracket;
@@ -114,6 +118,13 @@ namespace minidity
             foreach (var token in tokens)
                 Console.Write(token.raw + " ");
             Console.WriteLine("END TT");
+
+            for (var i = 1; i < tokens.Count - 1; i++)
+            {
+                if (tokens[i].type == TokenType.LeftParen &&
+                    tokens[i - 1].type == TokenType.Keyword)
+                    tokens[i].priority = -10000;
+            }
 
             return Sexp(tokens).Reverse().ToArray();
         }
@@ -254,6 +265,11 @@ namespace minidity
                 }
                 else if (token.type == TokenType.RightParen)
                 {
+                    Console.WriteLine("BeginStack");
+                    foreach (var s in stack)
+                        Console.WriteLine(s.raw);
+                    Console.WriteLine("EndStack");
+
                     while (stack.Count > 0)
                     {
                         if ((stack.Peek().type == TokenType.LeftParen))
@@ -270,6 +286,8 @@ namespace minidity
 
                             stack.Pop();
 
+                            Console.WriteLine(tt.raw + " / " + depth);
+
                             if (depth >= innerMethod)
                             {
                                 if (tt.raw == "if")
@@ -277,6 +295,14 @@ namespace minidity
                                     stokens.Add(new SToken()
                                     {
                                         type = STokenType.If,
+                                        raw = tt.raw
+                                    });
+                                }
+                                else if(tt.raw == "for")
+                                {
+                                    stokens.Add(new SToken()
+                                    {
+                                        type = STokenType.For,
                                         raw = tt.raw
                                     });
                                 }
@@ -363,7 +389,21 @@ namespace minidity
                                     raw = token.raw
                                 });
                             }
-
+                            break;
+                        case "for":
+                            if (nextToken?.type == TokenType.LeftParen)
+                            {
+                                if (depth >= innerMethod)
+                                    stack.Push(token);
+                            }
+                            else
+                            {
+                                stokens.Add(new SToken()
+                                {
+                                    type = STokenType.For,
+                                    raw = token.raw
+                                });
+                            }
                             break;
                         case "else":
                             stokens.Add(new SToken()
@@ -436,6 +476,8 @@ namespace minidity
                     break;
 
                 var t = stack.Pop();
+
+                Console.WriteLine("FLUSH : " + t.raw);
                 stokens.Add(new SToken()
                 {
                     type = t.stype,
